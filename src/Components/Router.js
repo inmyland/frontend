@@ -9,6 +9,8 @@ import Manual from "../Routes/Manual";
 import Community from "../Routes/Community";
 import Support from "../Routes/Support";
 import Game from "../Routes/Game";
+import Signup from "../Routes/Signup";
+import CommunityDetail from "../Routes/CommunityDetail";
 
 export default () => (
     <Router>
@@ -19,9 +21,12 @@ export default () => (
                 <Route path="/intro" exact component={Intro} />
                 <Route path="/manual" exact component={Manual} />
                 <Route path="/community" exact component={Community} />
+                <Route path="/community/board/:id" component={CommunityDetail} />
+                <Route path="/community/notice/:id" component={CommunityDetail} />
                 <Route path="/support" exact component={Support} />
                 <Route path="/game" exact component={Game} />
-                <Redirect from="*" to="/" />
+                <Route path="/signup" exact component={Signup} />
+                {/* <Redirect from="*" to="/" /> */}
             </Switch>
             <Footer />
         </>

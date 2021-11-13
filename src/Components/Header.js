@@ -2,6 +2,8 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 
+import LoginBox from "./LoginBox";
+
 const Top = styled.header`
     width: 100%;
     height: 70px;
@@ -21,9 +23,10 @@ const LogoLink = styled(Link)`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
-    font-weight: 600;
-    color: #FF9F1C;
+    background-image: url(${props => props.bgImg});
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
 `;
 
 const List = styled.ul`
@@ -53,6 +56,8 @@ const SLink = styled(Link)`
 
 const LoginContainer = styled.div`
     display: flex;
+    height: 100%;
+    align-items: center;
 `;
 
 const Login = styled.button`
@@ -70,33 +75,83 @@ const Login = styled.button`
     cursor: pointer;
 `;
 
-const Header = ({location: {pathname}}) => (
-    <>
-    {pathname !== '/game' ? 
-    <Top>
-    <LogoLink to="/">IML</LogoLink>
-    <List>
-        <Item>
-            <SLink to="/intro" current={pathname === '/intro'}>회사소개</SLink>
-        </Item>
-        <Item>
-            <SLink to="/manual" current={pathname === '/manual'}>이용안내</SLink>
-        </Item>
-        <Item>
-            <SLink to="/community" current={pathname === '/community'}>커뮤니티</SLink>
-        </Item>
-        <Item>
-            <SLink to="/support" current={pathname === '/support'}>고객지원</SLink>
-        </Item>
-    </List>
-    <LoginContainer>
-        <Login>로그인</Login>
-        <Login>회원가입</Login>
-    </LoginContainer>
-</Top> : console.log('no')}
-</>
+class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        const {
+            location: {pathname}
+        } = this.props;
+        this.state = {
+            isLoggingOn: false
+        }
+    }
+
+    render() {
+        const {location: {pathname}} = this.props;
+        const {isLoggingOn} = this.state;
+
+        return (
+            <>
+            {pathname !== '/game' ? 
+            <Top>
+            <LogoLink to="/" bgImg={require("../Assets/logo.png").default}></LogoLink>
+            <List>
+                <Item>
+                    <SLink to="/intro" current={pathname === '/intro'}>회사소개</SLink>
+                </Item>
+                <Item>
+                    <SLink to="/manual" current={pathname === '/manual'}>이용안내</SLink>
+                </Item>
+                <Item>
+                    <SLink to="/community" current={pathname.includes('/community')}>커뮤니티</SLink>
+                </Item>
+                <Item>
+                    <SLink to="/support" current={pathname === '/support'}>고객지원</SLink>
+                </Item>
+            </List>
+            <LoginContainer>
+                <Login onClick={function(){
+                    this.setState({
+                        isLoggingOn: !this.state.isLoggingOn
+                    })
+                }.bind(this)}>로그인</Login>
+                {isLoggingOn ? <LoginBox /> : null}
+                <SLink to="/signup" current={pathname === '/signup'}>회원가입</SLink>
+            </LoginContainer>
+        </Top> : console.log('no')}
+        </>
+            
+        )
+    }
+}
+
+// const Header = ({location: {pathname}}) => (
+//     <>
+//     {pathname !== '/game' ? 
+//     <Top>
+//     <LogoLink to="/">IML</LogoLink>
+//     <List>
+//         <Item>
+//             <SLink to="/intro" current={pathname === '/intro'}>회사소개</SLink>
+//         </Item>
+//         <Item>
+//             <SLink to="/manual" current={pathname === '/manual'}>이용안내</SLink>
+//         </Item>
+//         <Item>
+//             <SLink to="/community" current={pathname.includes('/community')}>커뮤니티</SLink>
+//         </Item>
+//         <Item>
+//             <SLink to="/support" current={pathname === '/support'}>고객지원</SLink>
+//         </Item>
+//     </List>
+//     <LoginContainer>
+//         <Login onClick={}>로그인</Login>
+//         <SLink to="/signup" current={pathname === '/signup'}>회원가입</SLink>
+//     </LoginContainer>
+// </Top> : console.log('no')}
+// </>
     
     
-)
+// )
 
 export default withRouter(Header);
